@@ -32,8 +32,7 @@ const Pin: React.FC<{
   );
 };
 
-const TOKEN =
-  "pk.eyJ1Ijoia3Jpc3RpYW5yeWtramUiLCJhIjoiY2xqemQ5N2MyMDQyYjNlbm5zYW50NmZkaCJ9.rTsVK0RSffDwMFnxgyGw7w";
+const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 export const MapComponent: React.FC = () => {
   const [popupInfo, setPopupInfo] = useState<{
