@@ -66,7 +66,15 @@ export const MapComponent: React.FC = () => {
               });
             }}
           >
-            <Pin />
+            <Pin
+              size={
+                properties.plasser > 1000
+                  ? 30
+                  : properties.plasser > 500
+                  ? 25
+                  : 20
+              }
+            />
           </Marker>
         );
       }),
