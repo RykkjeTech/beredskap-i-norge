@@ -89,7 +89,7 @@ export const MapComponent: React.FC = () => {
           bearing: 0,
           pitch: 0,
         }}
-        mapStyle="mapbox://styles/mapbox/dark-v9"
+        mapStyle="mapbox://styles/mapbox/outdoors-v12"
         mapboxAccessToken={TOKEN}
         style={{
           height: "100vh",
