@@ -38,8 +38,8 @@ export const MapComponent: React.FC = () => {
   const [popupInfo, setPopupInfo] = useState<{
     longitude: string;
     latitude: string;
-    city: string;
-    state: string;
+    adress: string;
+    capacity: number;
     // image: string;
   } | null>(null);
 
@@ -60,8 +60,8 @@ export const MapComponent: React.FC = () => {
               setPopupInfo({
                 longitude: String(longitude),
                 latitude: String(latitude),
-                city: properties.adresse,
-                state: properties.kommune,
+                adress: properties.adresse,
+                capacity: properties.plasser,
                 // image: properties.areal,
               });
             }}
@@ -108,12 +108,21 @@ export const MapComponent: React.FC = () => {
             latitude={Number(popupInfo.latitude)}
             onClose={() => setPopupInfo(null)}
           >
-            <div
-              style={{
-                color: "black",
-              }}
-            >
-              {popupInfo.city}, {popupInfo.state}
+            <div>
+              <p
+                style={{
+                  color: "black",
+                }}
+              >
+                Adresse: {popupInfo.adress}
+              </p>
+              <p
+                style={{
+                  color: "black",
+                }}
+              >
+                Kapasitet: {popupInfo.capacity}
+              </p>
             </div>
             <img width="100%" src={""} alt="" />
           </Popup>
