@@ -1,6 +1,7 @@
 import "./globals.css";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Beredskap i Norge",
   description: "Beredskap i Norge",
 };

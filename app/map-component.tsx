@@ -113,13 +113,7 @@ export const MapComponent: React.FC = () => {
                 color: "black",
               }}
             >
-              {popupInfo.city}, {popupInfo.state} |{" "}
-              <a
-                target="_new"
-                href={`http://en.wikipedia.org/w/index.php?title=Special:Search&search=${popupInfo.city}, ${popupInfo.state}`}
-              >
-                Wikipedia
-              </a>
+              {popupInfo.city}, {popupInfo.state}
             </div>
             <img width="100%" src={""} alt="" />
           </Popup>
