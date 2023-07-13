@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-directions": "^4.1.1",
     "@supabase/auth-helpers-nextjs": "^0.7.2",
     "@supabase/auth-ui-react": "^0.4.2",
     "@supabase/auth-ui-shared": "^0.1.6",
@@ -21,6 +22,7 @@
     "encoding": "^0.1.13",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "geojson": "^0.5.0",
     "mapbox-gl": "^2.15.0",
     "next": "13.4.9",
     "postcss": "8.4.25",
@@ -28,6 +30,10 @@
     "react-dom": "18.2.0",
     "react-map-gl": "^7.1.2",
     "tailwindcss": "3.3.2",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "xhr2": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.10"
   }
 }

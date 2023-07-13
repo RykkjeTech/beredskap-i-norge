@@ -1,4 +1,5 @@
 import AuthForm from "./auth-form";
+import "./page.css";
 
 export default function Home() {
   return (

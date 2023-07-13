@@ -1,6 +1,8 @@
 import "./globals.css";
 import { Metadata } from "next";
 
+global.XMLHttpRequest = require("xhr2");
+
 export const metadata: Metadata = {
   title: "Beredskap i Norge",
   description:

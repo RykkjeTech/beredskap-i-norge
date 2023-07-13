@@ -1,6 +1,13 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useMemo } from "react";
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+  useEffect,
+  use,
+} from "react";
 import Map, {
   Marker,
   Popup,
@@ -8,9 +15,14 @@ import Map, {
   FullscreenControl,
   ScaleControl,
   GeolocateControl,
+  MapRef,
+  IControl,
+  MapEvent,
 } from "react-map-gl";
 import { shelters } from "./shelters";
 import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
+import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 
 const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
   c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
@@ -81,6 +93,21 @@ export const MapComponent: React.FC = () => {
     []
   );
 
+  const mapRef = useRef<MapRef>(null);
+  const onMapLoad = useCallback(() => {
+    const map = mapRef.current?.getMap();
+    if (!map) return;
+
+    map.addControl(
+      new MapboxDirections({
+        accessToken: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
+        unit: "metric",
+        profile: "mapbox/driving",
+      }) as IControl,
+      "bottom-left"
+    );
+  }, []);
+
   return (
     <div
       id="map"
@@ -90,6 +117,8 @@ export const MapComponent: React.FC = () => {
       }}
     >
       <Map
+        ref={mapRef}
+        onLoad={onMapLoad}
         initialViewState={{
           latitude: 60,
           longitude: 10,
@@ -102,6 +131,12 @@ export const MapComponent: React.FC = () => {
         style={{
           height: "100vh",
           width: "100vw",
+        }}
+        onClick={(e) => {
+          // If we let the click event propagates to the map, it will immediately close the popup
+          // with `closeOnClick: true`
+          e.originalEvent.stopPropagation();
+          setPopupInfo(null);
         }}
       >
         <GeolocateControl position="top-left" />
