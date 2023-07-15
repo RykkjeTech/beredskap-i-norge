@@ -97,6 +97,9 @@ export const MapComponent: React.FC = () => {
         unit: "metric",
         profile: "mapbox/driving",
         interactive: false,
+        controls: {
+          instructions: false,
+        },
       }),
     []
   );
