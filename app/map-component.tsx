@@ -18,6 +18,7 @@ import Map, {
   MapRef,
   IControl,
   MapEvent,
+  GeolocateResultEvent,
 } from "react-map-gl";
 import { shelters } from "./shelters";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -93,20 +94,32 @@ export const MapComponent: React.FC = () => {
     []
   );
 
+  const [start, setStart] = useState<[number, number] | null>(null);
+  const [end, setEnd] = useState<[number, number] | null>(null);
+
+  const directions = useMemo(
+    () =>
+      new MapboxDirections({
+        accessToken: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
+        unit: "metric",
+        profile: "mapbox/driving",
+      }),
+    []
+  );
+
   const mapRef = useRef<MapRef>(null);
   const onMapLoad = useCallback(() => {
     const map = mapRef.current?.getMap();
     if (!map) return;
 
-    map.addControl(
-      new MapboxDirections({
-        accessToken: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
-        unit: "metric",
-        profile: "mapbox/driving",
-      }) as IControl,
-      "bottom-left"
-    );
-  }, []);
+    map.addControl(directions as any, "bottom-left");
+  }, [directions]);
+
+  // useEffect(() => {
+  //   if (end) {
+  //     directions.setDestination(end);
+  //   }
+  // }, [end, directions]);
 
   return (
     <div
@@ -139,7 +152,12 @@ export const MapComponent: React.FC = () => {
           setPopupInfo(null);
         }}
       >
-        <GeolocateControl position="top-left" />
+        <GeolocateControl
+          position="top-left"
+          onGeolocate={(evt: GeolocateResultEvent) => {
+            directions.setOrigin([evt.coords.longitude, evt.coords.latitude]);
+          }}
+        />
         <FullscreenControl position="top-left" />
         <NavigationControl position="top-left" />
         <ScaleControl />
@@ -167,6 +185,17 @@ export const MapComponent: React.FC = () => {
                 Kapasitet: {popupInfo.capacity}
               </p>
             </div>
+            <button
+              onClick={() =>
+                directions.setDestination([
+                  Number(popupInfo.longitude),
+                  Number(popupInfo.latitude),
+                ])
+              }
+            >
+              Gå til {popupInfo.adress}
+            </button>
+
             <img width="100%" src={""} alt="" />
           </Popup>
         )}
