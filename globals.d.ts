@@ -47,6 +47,6 @@ declare module "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions" {
     removeWaypoint(index: number): MapboxDirections;
     getWaypoints(): Array<any>;
     removeRoutes(): MapboxDirections;
-    on(type: string, fn: Function): MapboxDirections;
+    on(type: "origin" | "destination", fn: Function): MapboxDirections;
   }
 }

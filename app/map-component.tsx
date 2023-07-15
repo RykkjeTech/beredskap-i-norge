@@ -1,13 +1,6 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-import React, {
-  useState,
-  useMemo,
-  useRef,
-  useCallback,
-  useEffect,
-  use,
-} from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import Map, {
   Marker,
   Popup,
@@ -16,8 +9,6 @@ import Map, {
   ScaleControl,
   GeolocateControl,
   MapRef,
-  IControl,
-  MapEvent,
   GeolocateResultEvent,
 } from "react-map-gl";
 import { shelters } from "./shelters";
@@ -29,17 +20,20 @@ const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,
   c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
   C20.1,15.8,20.2,15.8,20.2,15.7z`;
 
-const pinStyle = {
-  cursor: "pointer",
-  fill: "#d00",
-  stroke: "none",
-};
-
 const Pin: React.FC<{
   size?: number;
-}> = ({ size = 20 }) => {
+  fill?: string;
+}> = ({ size = 20, fill = "#000000" }) => {
   return (
-    <svg height={size} viewBox="0 0 24 24" style={pinStyle}>
+    <svg
+      height={size}
+      viewBox="0 0 24 24"
+      style={{
+        cursor: "pointer",
+        stroke: "none",
+        fill,
+      }}
+    >
       <path d={ICON} />
     </svg>
   );
@@ -65,7 +59,6 @@ export const MapComponent: React.FC = () => {
             key={`marker-${index}`}
             longitude={longitude}
             latitude={latitude}
-            // anchor="bottom"
             onClick={(e) => {
               // If we let the click event propagates to the map, it will immediately close the popup
               // with `closeOnClick: true`
@@ -103,6 +96,7 @@ export const MapComponent: React.FC = () => {
         accessToken: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
         unit: "metric",
         profile: "mapbox/driving",
+        interactive: false,
       }),
     []
   );
@@ -115,11 +109,13 @@ export const MapComponent: React.FC = () => {
     map.addControl(directions as any, "bottom-left");
   }, [directions]);
 
-  // useEffect(() => {
-  //   if (end) {
-  //     directions.setDestination(end);
-  //   }
-  // }, [end, directions]);
+  directions.on("origin", (e: any) => {
+    setStart(e.feature.geometry.coordinates);
+  });
+
+  directions.on("destination", (e: any) => {
+    setEnd(e.feature.geometry.coordinates);
+  });
 
   return (
     <div
@@ -133,9 +129,9 @@ export const MapComponent: React.FC = () => {
         ref={mapRef}
         onLoad={onMapLoad}
         initialViewState={{
-          latitude: 60,
+          latitude: 62,
           longitude: 10,
-          zoom: 3.5,
+          zoom: 4.5,
           bearing: 0,
           pitch: 0,
         }}
@@ -163,11 +159,21 @@ export const MapComponent: React.FC = () => {
         <NavigationControl position="top-left" />
         <ScaleControl />
         {pins}
+        {start && (
+          <Marker longitude={start[0]} latitude={start[1]} key="marker-start">
+            <Pin size={30} fill="#00d" />
+          </Marker>
+        )}
+        {end && (
+          <Marker longitude={end[0]} latitude={end[1]} key="marker-end">
+            <Pin size={30} fill="#d00" />
+          </Marker>
+        )}
         {popupInfo && (
           <Popup
             anchor="top"
-            longitude={Number(popupInfo.longitude)}
-            latitude={Number(popupInfo.latitude)}
+            longitude={+popupInfo.longitude}
+            latitude={+popupInfo.latitude}
             onClose={() => setPopupInfo(null)}
           >
             <div>
@@ -187,16 +193,16 @@ export const MapComponent: React.FC = () => {
               </p>
             </div>
             <button
-              onClick={() =>
+              onClick={() => {
                 directions.setDestination([
-                  Number(popupInfo.longitude),
-                  Number(popupInfo.latitude),
-                ])
-              }
+                  +popupInfo.longitude,
+                  +popupInfo.latitude,
+                ]);
+                setEnd([+popupInfo.longitude, +popupInfo.latitude]);
+              }}
             >
               Gå til {popupInfo.adress}
             </button>
-
             <img width="100%" src={""} alt="" />
           </Popup>
         )}
