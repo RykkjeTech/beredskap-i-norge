@@ -151,6 +151,7 @@ export const MapComponent: React.FC = () => {
           e.originalEvent.stopPropagation();
           setPopupInfo(null);
         }}
+        maxZoom={0}
       >
         <GeolocateControl
           position="top-left"
