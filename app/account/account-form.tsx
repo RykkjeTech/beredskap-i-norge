@@ -6,6 +6,7 @@ import {
   Session,
   createClientComponentClient,
 } from "@supabase/auth-helpers-nextjs";
+import Link from "next/link";
 
 export default function AccountForm({ session }: { session: Session | null }) {
   const supabase = createClientComponentClient<Database>();
@@ -147,12 +148,16 @@ export default function AccountForm({ session }: { session: Session | null }) {
           </form>
         </div>
 
-        <div>
+        <div className="flex justify-between">
           <form action="/auth/signout" method="post">
             <button className="button block" type="submit">
               Logg ut
             </button>
           </form>
+
+          <Link className="hover:underline" href="/">
+            Til kart
+          </Link>
         </div>
       </div>
     </div>

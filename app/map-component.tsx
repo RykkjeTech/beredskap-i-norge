@@ -15,6 +15,8 @@ import { shelters } from "./shelters";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
+import Link from "next/link";
+import { Session } from "@supabase/auth-helpers-nextjs";
 
 const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
   c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
@@ -41,7 +43,11 @@ const Pin: React.FC<{
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-export const MapComponent: React.FC = () => {
+export const MapComponent: React.FC<{
+  session: Session | null;
+}> = ({ session }) => {
+  const user = session?.user;
+  console.log("🚀 ~ file: map-component.tsx:50 ~ user:", user);
   const [popupInfo, setPopupInfo] = useState<{
     longitude: string;
     latitude: string;
@@ -129,6 +135,14 @@ export const MapComponent: React.FC = () => {
         height: "100vh",
       }}
     >
+      <Link href={session?.user ? "/account" : "/login"}>
+        <div className="rounded absolute top-0 right-0 z-10 p-2 bg-white w-20 h-10">
+          <div className="flex flex-col items-center justify-center text-black">
+            {session?.user ? "Min side" : "Logg inn"}
+          </div>
+        </div>
+      </Link>
+
       <Map
         ref={mapRef}
         onLoad={onMapLoad}

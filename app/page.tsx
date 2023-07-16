@@ -1,5 +1,8 @@
 import { Metadata } from "next";
 import { MapComponent } from "./map-component";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { Database } from "./database.types";
 
 export const metadata: Metadata = {
   viewport: {
@@ -13,5 +16,10 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <MapComponent />;
+  const supabase = createServerComponentClient<Database>({ cookies });
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  return <MapComponent session={session} />;
 }
