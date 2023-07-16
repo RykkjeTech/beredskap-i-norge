@@ -179,6 +179,7 @@ export const MapComponent: React.FC = () => {
             longitude={+popupInfo.longitude}
             latitude={+popupInfo.latitude}
             onClose={() => setPopupInfo(null)}
+            closeButton={false}
           >
             <div>
               <p
@@ -203,6 +204,14 @@ export const MapComponent: React.FC = () => {
                   +popupInfo.latitude,
                 ]);
                 setEnd([+popupInfo.longitude, +popupInfo.latitude]);
+              }}
+              style={{
+                backgroundColor: "#d00",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                cursor: "pointer",
               }}
             >
               Gå til {popupInfo.adress}

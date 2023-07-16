@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Metadata } from "next";
+import SupabaseProvider from "./supabase-provider";
 
 global.XMLHttpRequest = require("xhr2");
 
@@ -24,7 +25,9 @@ export default async function RootLayout({
   return (
     <html lang="nb">
       <body>
-        <div>{children}</div>
+        <SupabaseProvider>
+          <main>{children}</main>
+        </SupabaseProvider>
       </body>
     </html>
   );
