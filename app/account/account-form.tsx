@@ -74,7 +74,7 @@ export default function AccountForm({ session }: { session: Session | null }) {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-full">
+    <div className="flex flex-col justify-center items-center min-h-screen w-full px-2">
       <div className="flex flex-col space-y-4 max-w-lg w-full">
         <Avatar
           uid={user!.id}

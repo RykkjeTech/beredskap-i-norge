@@ -47,7 +47,6 @@ export const MapComponent: React.FC<{
   session: Session | null;
 }> = ({ session }) => {
   const user = session?.user;
-  console.log("🚀 ~ file: map-component.tsx:50 ~ user:", user);
   const [popupInfo, setPopupInfo] = useState<{
     longitude: string;
     latitude: string;
