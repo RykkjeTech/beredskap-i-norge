@@ -16,7 +16,6 @@ export interface Database {
           username: string | null;
           full_name: string | null;
           avatar_url: string | null;
-          website: string | null;
         };
         Insert: {
           id: string;
@@ -24,7 +23,6 @@ export interface Database {
           username?: string | null;
           full_name?: string | null;
           avatar_url?: string | null;
-          website?: string | null;
         };
         Update: {
           id?: string;
@@ -32,7 +30,6 @@ export interface Database {
           username?: string | null;
           full_name?: string | null;
           avatar_url?: string | null;
-          website?: string | null;
         };
       };
     };

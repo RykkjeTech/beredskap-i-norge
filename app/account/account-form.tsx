@@ -12,7 +12,6 @@ export default function AccountForm({ session }: { session: Session | null }) {
   const [loading, setLoading] = useState(true);
   const [fullname, setFullname] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [website, setWebsite] = useState<string | null>(null);
   const [avatar_url, setAvatarUrl] = useState<string | null>(null);
   const user = session?.user;
 
@@ -22,7 +21,7 @@ export default function AccountForm({ session }: { session: Session | null }) {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`full_name, username, website, avatar_url`)
+        .select(`full_name, username, avatar_url`)
         .eq("id", user?.id)
         .single();
 
@@ -33,7 +32,6 @@ export default function AccountForm({ session }: { session: Session | null }) {
       if (data) {
         setFullname(data.full_name);
         setUsername(data.username);
-        setWebsite(data.website);
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
@@ -49,12 +47,10 @@ export default function AccountForm({ session }: { session: Session | null }) {
 
   async function updateProfile({
     username,
-    website,
     avatar_url,
   }: {
     username: string | null;
     fullname: string | null;
-    website: string | null;
     avatar_url: string | null;
   }) {
     try {
@@ -64,7 +60,6 @@ export default function AccountForm({ session }: { session: Session | null }) {
         id: user?.id as string,
         full_name: fullname,
         username,
-        website,
         avatar_url,
         updated_at: new Date().toISOString(),
       });
@@ -85,7 +80,7 @@ export default function AccountForm({ session }: { session: Session | null }) {
         size={150}
         onUpload={(url) => {
           setAvatarUrl(url);
-          updateProfile({ fullname, username, website, avatar_url: url });
+          updateProfile({ fullname, username, avatar_url: url });
         }}
       />
       <div>
@@ -93,7 +88,7 @@ export default function AccountForm({ session }: { session: Session | null }) {
         <input id="email" type="text" value={session?.user.email} disabled />
       </div>
       <div>
-        <label htmlFor="fullName">Full Name</label>
+        <label htmlFor="fullName">Navn</label>
         <input
           id="fullName"
           type="text"
@@ -102,7 +97,7 @@ export default function AccountForm({ session }: { session: Session | null }) {
         />
       </div>
       <div>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">Brukernavn</label>
         <input
           id="username"
           type="text"
@@ -110,22 +105,11 @@ export default function AccountForm({ session }: { session: Session | null }) {
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="url"
-          value={website || ""}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div>
 
       <div>
         <button
           className="button primary block"
-          onClick={() =>
-            updateProfile({ fullname, username, website, avatar_url })
-          }
+          onClick={() => updateProfile({ fullname, username, avatar_url })}
           disabled={loading}
         >
           {loading ? "Loading ..." : "Update"}
@@ -135,7 +119,7 @@ export default function AccountForm({ session }: { session: Session | null }) {
       <div>
         <form action="/auth/signout" method="post">
           <button className="button block" type="submit">
-            Sign out
+            Logg ut
           </button>
         </form>
       </div>
