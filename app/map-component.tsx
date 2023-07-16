@@ -100,6 +100,7 @@ export const MapComponent: React.FC = () => {
         controls: {
           instructions: false,
         },
+        flyTo: false,
       }),
     []
   );
