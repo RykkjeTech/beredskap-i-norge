@@ -12,7 +12,7 @@ export default async function SignIn() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-full">
-      <div className="flex flex-col space-y-4 max-w-xs">
+      <div className="flex flex-col space-y-4 max-w-lg w-full">
         <div className="flex flex-col space-y-4">
           <h1 className="text-4xl font-bold text-center">Beredskap i Norge</h1>
           <p className="text-center">

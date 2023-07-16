@@ -73,55 +73,87 @@ export default function AccountForm({ session }: { session: Session | null }) {
   }
 
   return (
-    <div className="form-widget">
-      <Avatar
-        uid={user!.id}
-        url={avatar_url}
-        size={150}
-        onUpload={(url) => {
-          setAvatarUrl(url);
-          updateProfile({ fullname, username, avatar_url: url });
-        }}
-      />
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={session?.user.email} disabled />
-      </div>
-      <div>
-        <label htmlFor="fullName">Navn</label>
-        <input
-          id="fullName"
-          type="text"
-          value={fullname || ""}
-          onChange={(e) => setFullname(e.target.value)}
+    <div className="flex flex-col justify-center items-center min-h-screen w-full">
+      <div className="flex flex-col space-y-4 max-w-lg w-full">
+        <Avatar
+          uid={user!.id}
+          url={avatar_url}
+          size={150}
+          onUpload={(url) => {
+            setAvatarUrl(url);
+            updateProfile({ fullname, username, avatar_url: url });
+          }}
         />
-      </div>
-      <div>
-        <label htmlFor="username">Brukernavn</label>
-        <input
-          id="username"
-          type="text"
-          value={username || ""}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
+        <div className="w-full">
+          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="email"
+                type="email"
+                value={session?.user.email}
+                disabled
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="username"
+              >
+                Brukernavn
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="username"
+                type="text"
+                placeholder="brukernavn"
+                onChange={(e) => setUsername(e.target.value)}
+                value={username || ""}
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="name"
+              >
+                Navn
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="name"
+                type="text"
+                placeholder="navn"
+                onChange={(e) => setFullname(e.target.value)}
+                value={fullname || ""}
+              />
+            </div>
+            <div>
+              <button
+                className="flex justify-center items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                onClick={() =>
+                  updateProfile({ fullname, username, avatar_url })
+                }
+                disabled={loading}
+              >
+                {loading ? "Laster ..." : "Oppdater"}
+              </button>
+            </div>
+          </form>
+        </div>
 
-      <div>
-        <button
-          className="button primary block"
-          onClick={() => updateProfile({ fullname, username, avatar_url })}
-          disabled={loading}
-        >
-          {loading ? "Loading ..." : "Update"}
-        </button>
-      </div>
-
-      <div>
-        <form action="/auth/signout" method="post">
-          <button className="button block" type="submit">
-            Logg ut
-          </button>
-        </form>
+        <div>
+          <form action="/auth/signout" method="post">
+            <button className="button block" type="submit">
+              Logg ut
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

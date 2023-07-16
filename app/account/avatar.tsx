@@ -78,17 +78,17 @@ export default function Avatar({
           height={size}
           src={avatarUrl}
           alt="Avatar"
-          className="avatar image"
+          className="flex items-center justify-center rounded"
           style={{ height: size, width: size }}
         />
       ) : (
         <div
-          className="avatar no-image"
+          className="flex items-center justify-center bg-gray-200 rounded"
           style={{ height: size, width: size }}
         />
       )}
       <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
+        <label className="cursor-pointer" htmlFor="single">
           {uploading ? "Uploading ..." : "Upload"}
         </label>
         <input
