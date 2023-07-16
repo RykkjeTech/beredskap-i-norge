@@ -2,6 +2,7 @@ import "./page.css";
 import { getSession } from "@/app/supabase-server";
 import AuthUI from "./AuthUI";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function SignIn() {
   const session = await getSession();
@@ -20,6 +21,9 @@ export default async function SignIn() {
           </p>
         </div>
         <AuthUI />
+      </div>
+      <div className="absolute top-0 right-0 flex justify-center items-center p-4">
+        <Link href="/">Gå til kart</Link>
       </div>
     </div>
   );
