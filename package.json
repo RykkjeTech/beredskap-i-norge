@@ -17,7 +17,7 @@
     "@types/mapbox-gl": "^2.7.11",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
-    "@types/react-dom": "18.2.6",
+    "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "encoding": "^0.1.13",
     "eslint": "8.44.0",
