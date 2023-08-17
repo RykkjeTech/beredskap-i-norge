@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export default async function SignIn() {
+  return redirect("/");
+
   const session = await getSession();
 
   if (session) {
